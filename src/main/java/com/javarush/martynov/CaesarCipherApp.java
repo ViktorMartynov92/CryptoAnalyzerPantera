@@ -8,6 +8,8 @@ import java.util.*;
 class CaesarCipherApp {
     private final String ALPHABET = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя .,!?";
 
+    private final Map<Character, Double> RUSSIAN_FREQ = createRussianFreqMap();
+
     void start() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("=*=*= Caesar Cipher Application =*=*=");
@@ -66,7 +68,7 @@ class CaesarCipherApp {
         try {
             processFile(inputFile, outputFile, key, true);
             System.out.println("Файл успешно зашифрован и сохранён в: " + outputFile.getAbsolutePath());
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Ошибка при обработке файлов: " + e.getMessage());
         }
     }
@@ -92,7 +94,7 @@ class CaesarCipherApp {
         try {
             processFile(inputFile, outputFile, key, false);
             System.out.println("Файл успешно расшифрован и сохранён в: " + outputFile.getAbsolutePath());
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Ошибка при обработке файлов: " + e.getMessage());
         }
     }
@@ -250,7 +252,7 @@ class CaesarCipherApp {
      * @throws IOException Если произошла ошибка ввода-вывода при чтении или записи файлов.
      */
 
-    private void processFile(File inputFile, File outputFile, int key, boolean encrypt) throws IOException {
+    private void processFile(File inputFile, File outputFile, int key, boolean encrypt) throws Exception {
         // Буфер для чтения
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), StandardCharsets.UTF_8));
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.UTF_8))) {
@@ -352,12 +354,10 @@ class CaesarCipherApp {
     }
 
     /**
-     * Карта, содержащая статистическую частотность букв русского алфавита.
-     * Ключ — это буква (символ), а значение — её приблизительная частота
-     * встречаемости в процентах.
+     * Создание карты содержащую статистическую частотность букв русского алфавита.
+     * Ключ — это буква (символ), а значение — её приблизительная частота встречаемости в процентах.
      */
 
-    private final Map<Character, Double> RUSSIAN_FREQ = createRussianFreqMap();
 
     private Map<Character, Double> createRussianFreqMap() {
         Map<Character, Double> freq = new HashMap<>();
